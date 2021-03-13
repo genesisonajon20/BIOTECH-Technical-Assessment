@@ -45,12 +45,12 @@
                     <i class="fas fa-cube"></i>
                     <span>PRODUCTS</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item ">
                 <a class="nav-link" href="customer.php">
                     <i class="fas fa-users"></i>
                     <span>CUSTOMER</span></a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item active ">
                 <a class="nav-link" href="sales.php">
                     <i class="fas fa-chart-bar"></i>
                     <span>SALES</span></a>
@@ -94,7 +94,7 @@
                     
                      <!-- Topbar Navbar -->
                      <ul class="navbar-nav ml-auto">
-                            <h1>CUSTOMER INFO</h1>
+                            <h1>SALES</h1>
                         </ul>
                         
                    
@@ -103,75 +103,52 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <?php require_once 'customerProcess.php';?>
-                <div class="container-fluid">
-                    <form action = "customerProcess.php" method = "POST">
                 
-                    
-                   
-                    <!-- Content Row -->
-                    <div class="form-group">
-                        <label>Customer Name</label>
-                        <input type = "text" name = "CustName" class = "form-control"
-                               value="<?php echo $CustName?>" placeholder = "Enter Customer Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type = "text" name = "CustAddress" class = "form-control"
-                               value="<?php echo $CustAddress?>" placeholder = "Enter Address.">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type = "text" name = "CustNumber" class = "form-control"
-                               value = "<?php echo $CustNumber?>" placeholder = "Enter Contact No.">
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class = "form-group">
-                        <button type = "submit" class="btn btn-primary" name ="btnSave">Save</button>
-                    </div>
-                    </form>
-
-                </div>
                 <!-- /.container-fluid -->
                 <!--for table and viewing data-->
-<?php
-$mysqli = new mysqli('localhost', 'root', '', 'inventorydb') or die (mysqli_error($mysqli));
-$result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")or die($mysqli->error);
-?>
+
     <div class="container-fluid">
         <div class = "form-group">
             <table class = "table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Customer Name</th>
-                <th>Address</th>
-                <th>Contact No.</th>
+                <th>Product Description</th>
+                <th>Customer Name.</th>
+                <th>Sold Quantity</th>
+                <th>Total Sold</th> 
+                <th>Date</th> 
+                
             </tr>
         </thead>
+        <?php
+$mysqli = new mysqli('localhost', 'root', '', 'inventorydb') or die (mysqli_error($mysqli));
+$result = $mysqli->query("SELECT sales_tbl.Sales_ID, product_tbl.Prod_Desc, customer_tbl.Cust_Name, sales_tbl.Sold_Qty, (product_tbl.Prod_Qty - sales_tbl.Sold_Qty)AS Total_Item_Left, sales_tbl.Total_Sold, sales_tbl.Date FROM sales_tbl INNER JOIN product_tbl ON sales_tbl.Product_ID = product_tbl.product_id
+ INNER JOIN customer_tbl ON sales_tbl.Customer_ID = customer_tbl.Customer_id ORDER BY sales_tbl.Date DESC ")or die($mysqli->error);
+?>
         <?php
             while ($row = $result->fetch_assoc()): 
         ?>
             <tr>
                 <td>
-                    <?php echo $row ['Customer_id']?>
+                    <?php echo $row ['Sales_ID']?>
+                </td>
+                <td>
+                    <?php echo $row ['Prod_Desc']?>
                 </td>
                 <td>
                     <?php echo $row ['Cust_Name']?>
                 </td>
                 <td>
-                    <?php echo $row ['Cust_Address']?>
+                    <?php echo $row ['Sold_Qty']?>
                 </td>
                 <td>
-                    <?php echo $row ['Contact_Number']?>
+                    <?php echo $row ['Total_Sold']?>
                 </td>
                 <td>
-                   
-
+                    <?php echo $row ['Date']?>
                 </td>
+                
             </tr>
 
             <?php endwhile;?>    
@@ -187,6 +164,7 @@ $result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")
     }
 
 ?>
+
 
             </div>
             <!-- End of Main Content -->

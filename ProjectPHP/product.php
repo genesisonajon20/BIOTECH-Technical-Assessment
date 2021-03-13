@@ -10,6 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Libre Barcode 39' rel='stylesheet'>
         
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -40,12 +41,12 @@
                     <i class="fas fa-truck-loading"></i>
                     <span>SUPPLIER</span></a>
                 </li>
-                <li class="nav-item ">
+                <li class="nav-item active">
                 <a class="nav-link" href="product.php">
                     <i class="fas fa-cube"></i>
                     <span>PRODUCTS</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item ">
                 <a class="nav-link" href="customer.php">
                     <i class="fas fa-users"></i>
                     <span>CUSTOMER</span></a>
@@ -94,7 +95,7 @@
                     
                      <!-- Topbar Navbar -->
                      <ul class="navbar-nav ml-auto">
-                            <h1>CUSTOMER INFO</h1>
+                            <h1>PRODUCT INFO</h1>
                         </ul>
                         
                    
@@ -103,75 +104,55 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <?php require_once 'customerProcess.php';?>
-                <div class="container-fluid">
-                    <form action = "customerProcess.php" method = "POST">
-                
-                    
-                   
-                    <!-- Content Row -->
-                    <div class="form-group">
-                        <label>Customer Name</label>
-                        <input type = "text" name = "CustName" class = "form-control"
-                               value="<?php echo $CustName?>" placeholder = "Enter Customer Name">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type = "text" name = "CustAddress" class = "form-control"
-                               value="<?php echo $CustAddress?>" placeholder = "Enter Address.">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type = "text" name = "CustNumber" class = "form-control"
-                               value = "<?php echo $CustNumber?>" placeholder = "Enter Contact No.">
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class = "form-group">
-                        <button type = "submit" class="btn btn-primary" name ="btnSave">Save</button>
-                    </div>
-                    </form>
-
-                </div>
+              
                 <!-- /.container-fluid -->
                 <!--for table and viewing data-->
-<?php
-$mysqli = new mysqli('localhost', 'root', '', 'inventorydb') or die (mysqli_error($mysqli));
-$result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")or die($mysqli->error);
-?>
+
     <div class="container-fluid">
         <div class = "form-group">
             <table class = "table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Customer Name</th>
-                <th>Address</th>
-                <th>Contact No.</th>
+                <th>BARCODE</th>
+                <th>Supplier Name</th>
+                <th>Product Description</th>
+                <th>Product Quantity</th>
+                <th>Price</th>
+                <th>Date</th>
             </tr>
         </thead>
+        <?php
+$mysqli = new mysqli('localhost', 'root', '', 'inventorydb') or die (mysqli_error($mysqli));
+$result = $mysqli->query("SELECT product_tbl.product_id, product_tbl.Barcode, supplier_tbl.Supp_Company, product_tbl.Prod_Desc, product_tbl.Prod_Qty, product_tbl.Prod_Cost, product_tbl.Prod_Date
+ FROM product_tbl INNER JOIN supplier_tbl ON product_tbl.supplier_id = supplier_tbl.Supplier_ID")or die($mysqli->error);
+?>
         <?php
             while ($row = $result->fetch_assoc()): 
         ?>
             <tr>
                 <td>
-                    <?php echo $row ['Customer_id']?>
+                    <?php echo $row ['product_id']?>
+                </td>
+                <td style = "font-family: 'Libre Barcode 39'; font-size: 30px; text-align: center">
+                    <?php echo $row ['Barcode']?>
                 </td>
                 <td>
-                    <?php echo $row ['Cust_Name']?>
+                    <?php echo $row ['Supp_Company']?>
                 </td>
                 <td>
-                    <?php echo $row ['Cust_Address']?>
+                    <?php echo $row ['Prod_Desc']?>
                 </td>
                 <td>
-                    <?php echo $row ['Contact_Number']?>
+                    <?php echo $row ['Prod_Qty']?>
                 </td>
                 <td>
-                   
-
+                    <?php echo $row ['Prod_Cost']?>
                 </td>
+                <td>
+                    <?php echo $row ['Prod_Date']?>
+                </td>
+                
             </tr>
 
             <?php endwhile;?>    

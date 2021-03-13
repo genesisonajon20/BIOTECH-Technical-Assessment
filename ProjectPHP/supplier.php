@@ -35,7 +35,7 @@
             <hr class="sidebar-divider my-0">
 
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item ">
+                <li class="nav-item active">
                 <a class="nav-link" href="supplier.php">
                     <i class="fas fa-truck-loading"></i>
                     <span>SUPPLIER</span></a>
@@ -45,7 +45,7 @@
                     <i class="fas fa-cube"></i>
                     <span>PRODUCTS</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                 <a class="nav-link" href="customer.php">
                     <i class="fas fa-users"></i>
                     <span>CUSTOMER</span></a>
@@ -94,7 +94,7 @@
                     
                      <!-- Topbar Navbar -->
                      <ul class="navbar-nav ml-auto">
-                            <h1>CUSTOMER INFO</h1>
+                            <h1>SUPPLIER INFO</h1>
                         </ul>
                         
                    
@@ -103,34 +103,37 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <?php require_once 'customerProcess.php';?>
+                <?php require_once 'process.php';?>
                 <div class="container-fluid">
-                    <form action = "customerProcess.php" method = "POST">
+                    <form action = "process.php" method = "POST">
                 
                     
                    
                     <!-- Content Row -->
                     <div class="form-group">
-                        <label>Customer Name</label>
-                        <input type = "text" name = "CustName" class = "form-control"
-                               value="<?php echo $CustName?>" placeholder = "Enter Customer Name">
+                        <label>Company Name</label>
+                        <input type = "text" name = "CompName" class = "form-control"
+                               value="<?php echo $CompName?>" placeholder = "Enter Company name">
                     </div>
 
                     <div class="form-group">
-                        <label>Address</label>
-                        <input type = "text" name = "CustAddress" class = "form-control"
-                               value="<?php echo $CustAddress?>" placeholder = "Enter Address.">
+                        <label>Contact No.</label>
+                        <input type = "text" name = "ContactNo" class = "form-control"
+                               value="<?php echo $ContactNo?>" placeholder = "Enter Contact No.">
                     </div>
 
                     <div class="form-group">
-                        <label>Contact Number</label>
-                        <input type = "text" name = "CustNumber" class = "form-control"
-                               value = "<?php echo $CustNumber?>" placeholder = "Enter Contact No.">
+                        <label>Address.</label>
+                        <input type = "text" name = "CompAddress" class = "form-control"
+                               value = "<?php echo $CompAddress?>" placeholder = "Enter Address.">
                     </div>
 
                     <!-- Content Row -->
                     <div class = "form-group">
+                   
                         <button type = "submit" class="btn btn-primary" name ="btnSave">Save</button>
+                    
+                            
                     </div>
                     </form>
 
@@ -139,7 +142,7 @@
                 <!--for table and viewing data-->
 <?php
 $mysqli = new mysqli('localhost', 'root', '', 'inventorydb') or die (mysqli_error($mysqli));
-$result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")or die($mysqli->error);
+$result = $mysqli->query("SELECT * FROM supplier_tbl")or die($mysqli->error);
 ?>
     <div class="container-fluid">
         <div class = "form-group">
@@ -147,9 +150,10 @@ $result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Customer Name</th>
-                <th>Address</th>
+                <th>Company Name</th>
                 <th>Contact No.</th>
+                <th>Company Address</th>
+                
             </tr>
         </thead>
         <?php
@@ -157,20 +161,19 @@ $result = $mysqli->query("SELECT * FROM customer_tbl ORDER BY Customer_id DESC")
         ?>
             <tr>
                 <td>
-                    <?php echo $row ['Customer_id']?>
+                    <?php echo $row ['Supplier_ID']?>
                 </td>
                 <td>
-                    <?php echo $row ['Cust_Name']?>
+                    <?php echo $row ['Supp_Company']?>
                 </td>
                 <td>
-                    <?php echo $row ['Cust_Address']?>
+                    <?php echo $row ['Supp_Contact_No']?>
                 </td>
                 <td>
-                    <?php echo $row ['Contact_Number']?>
+                    <?php echo $row ['Supp_address']?>
                 </td>
                 <td>
-                   
-
+                    
                 </td>
             </tr>
 
